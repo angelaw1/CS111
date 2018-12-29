@@ -1,0 +1,23 @@
+NAME: Angela Wu
+EMAIL: angelawu.123456789@gmail.com
+ID: 604763501
+
+INCLUDED FILES
+lab1a.c 		Contains implementation of a program that prints input from 
+				keyboard to the output screen. Also redirects input  as commands
+				to a shell and prints out the results to the screen when '--shell'
+				option is specified
+
+Makefile		creates the executable for the program (make), creates a tar 
+				file (dist), deletes files created with dist (clean)
+
+README			This file. Extra information about the project
+
+
+RESOURCES
+	https://www.gnu.org/software/libc/manual/html_node/Noncanon-Example.html
+		my use of termios functions is based on this example
+	https://www.geeksforgeeks.org/c-program-demonstrate-fork-and-pipe/
+		my use of fork and pipe is based on this example
+	http://pubs.opengroup.org/onlinepubs/009695399/functions/poll.html
+		my use of poll is based on this example

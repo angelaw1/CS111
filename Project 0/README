@@ -1,0 +1,34 @@
+NAME: Angela Wu
+EMAIL: angelawu.123456789@gmail.com
+ID: 604763501
+
+INCLUDED FILES
+lab0.c			implementation of a program that copies standard input
+			to standard output
+Makefile		creates the executable for the program (make), tests 
+			the program (check), creates a tar file (dist), 
+			deletes unneeded files (clean)
+backtrace.png		screenshot of the of the backtrace of the segmentation
+			fault
+breakpoint.png		screenshot showing the value of the pointer that 
+			caused the segmentation fault is NULL
+README			This file. Extra information about the project
+
+
+SMOKE-TEST CASES
+test1			tests whether output matches input
+test2			tests for exit code 1, bad arguments
+test3			tests for exit code 2, missing input file
+test4			tests for exit code 4, segmentation fault
+test5			tests for exit code 3, can't create output file
+
+
+LIMITATIONS
+If the same option is used more than once, only the last occurence counts
+
+
+RESOURCES
+https://stackoverflow.com/questions/748445/shell-status-codes-in-make
+	using escape codes in Makefiles
+https://unix.stackexchange.com/questions/270778/how-to-write-exactly-bash-scripts-into-makefiles
+	writing bash in Makefile

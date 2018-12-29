@@ -1,0 +1,23 @@
+NAME: Angela Wu
+EMAIL: angelawu.123456789@gmail.com
+ID: 604763501
+
+INCLUDED FILES
+lab1b-server.c 				Contains implementation of a server program that
+							takes commands from the client program and retrieves
+							the outputs from a shell
+
+lab1b-client.c 				Contains implementation of a client program that
+							can connect to the server program and make requests
+							with commands
+
+Makefile					creates the executable for the programs (make), creates a tar 
+							file (dist), deletes files created with dist (clean)
+
+README						This file. Extra information about the project
+
+RESOURCES
+https://www.youtube.com/watch?v=LtXEMwSG5-8
+	tutorial on socket programming
+https://www.geeksforgeeks.org/socket-programming-cc/
+	tutorial on socket programming

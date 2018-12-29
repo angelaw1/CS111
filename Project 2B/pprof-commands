@@ -1,0 +1,8 @@
+gcc -g -o lab2_list lab2_list.c SortedList.c -lpthread -lprofiler -ltcmalloc
+LD_PRELOAD=/usr/lib64/libprofiler.so CPUPROFILE=profile.prof ./lab2_list --threads=12 --iterations=1000 --sync=s
+pprof --text lab2_list profile.prof >> profile.out
+cat profile.out
+pprof --list=SortedList_insert lab2_list profile.prof >> profile.out
+cat profile.out
+
+pprof --list=modify_list_spin lab2_list profile.prof >> profile.out

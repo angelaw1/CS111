@@ -1,0 +1,184 @@
+Total: 1258 samples
+    1048  83.3%  83.3%     1258 100.0% modify_list_spin
+      73   5.8%  89.1%       73   5.8% SortedList_insert
+      52   4.1%  93.2%       52   4.1% 0x00007ffd969ef6c2
+      48   3.8%  97.1%       84   6.7% SortedList_lookup
+      36   2.9%  99.9%       36   2.9% __strcmp_sse42
+       1   0.1% 100.0%       53   4.2% __GI___clock_gettime
+       0   0.0% 100.0%     1258 100.0% __clone
+       0   0.0% 100.0%     1258 100.0% start_thread
+       0   0.0% 100.0%     1258 100.0% thread_func
+ROUTINE ====================== modify_list_spin in /u/eng/ugrad/angelaw/Desktop/cs111/project2b/lab2_list.c
+  1048   1258 Total samples (flat / cumulative)
+     .      .   91: 		}
+     .      .   92: 	}
+     .      .   93: 	return NULL;
+     .      .   94: }
+     .      .   95: 
+---
+     .      .   96: void* modify_list_spin(long long index) {
+     .      .   97: 	struct timespec begin, end;
+     .      .   98: 	for (long long i = 0; i != iterations; i++) {
+     .      .   99: 		int key = hash_key[index*iterations + i];
+     .     10  100: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &begin) < 0) {
+     .      .  101: 			syscall_error();
+     .      .  102: 		}
+     .      .  103: 
+   482    482  104: 		while (__sync_lock_test_and_set(&((sublist_arr + key)->spin_lock), 1))
+     .      .  105: 			;
+     .      .  106: 
+     .      .  107: 
+     .     17  108: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end) < 0) {
+     .      .  109: 			syscall_error();
+     .      .  110: 		}
+     .      .  111: 
+     .      .  112: 		wait[key] += (end.tv_nsec - begin.tv_nsec);
+     .      .  113: 
+     .     73  114: 		SortedList_insert((sublist_arr + key)->list, elementArr + index*iterations + i);
+     .      .  115: 		__sync_lock_release(&((sublist_arr + key)->spin_lock));
+     .      .  116: 	}
+     .      .  117: 
+     .      .  118: 	for (int i = 0; i != num_list; i++) {
+     .      .  119: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &begin) < 0) {
+     .      .  120: 			syscall_error();
+     .      .  121: 		}
+     .      .  122: 
+     3      3  123: 		while (__sync_lock_test_and_set(&((sublist_arr + i)->spin_lock), 1))
+     .      .  124: 			;	
+     .      .  125: 
+     .      .  126: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end) < 0) {
+     .      .  127: 			syscall_error();
+     .      .  128: 		}
+     .      .  129: 
+     .      .  130: 		wait[i] += (end.tv_nsec - begin.tv_nsec);
+     .      .  131: 
+     .      .  132: 		int length = SortedList_length((sublist_arr + i)->list);
+     .      .  133: 		__sync_lock_release(&((sublist_arr + i)->spin_lock));
+     .      .  134: 
+     .      .  135: 		if (length == -1) {
+     .      .  136: 			fprintf(stderr, "SortedList_length failed: List was corrupted\n");
+     .      .  137: 			exit(EXIT_OTHER);
+     .      .  138: 		}
+     .      .  139: 	}
+     .      .  140: 
+     .      .  141: 	for (long long i = 0; i != iterations; i++) {
+     .      .  142: 		int key = hash_key[index*iterations + i];
+     .     10  143: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &begin) < 0) {
+     .      .  144: 			syscall_error();
+     .      .  145: 		}
+     .      .  146: 
+   562    562  147: 		while (__sync_lock_test_and_set(&((sublist_arr + key)->spin_lock), 1))
+     .      .  148: 			;		
+     .      .  149: 
+     .     16  150: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end) < 0) {
+     .      .  151: 			syscall_error();
+     .      .  152: 		}
+     .      .  153: 
+     .      .  154: 		wait[key] += (end.tv_nsec - begin.tv_nsec);
+     .      .  155: 
+     .     84  156: 		SortedListElement_t *del_element = SortedList_lookup((sublist_arr + key)->list, (elementArr + index*iterations + i)->key);
+     .      .  157: 		if (del_element == NULL) {
+     .      .  158: 			fprintf(stderr, "SortedList_lookup failed: List was corrupted\n");
+     .      .  159: 			exit(EXIT_OTHER);
+     .      .  160: 		}
+     .      .  161: 		if (SortedList_delete(del_element) != 0) {
+     .      .  162: 			fprintf(stderr, "SortedList_delete failed: List was corrupted\n");
+     .      .  163: 			exit(EXIT_OTHER);
+     .      .  164: 		}
+     1      1  165: 		__sync_lock_release(&((sublist_arr + key)->spin_lock));
+     .      .  166: 	}
+     .      .  167: 	return NULL;
+     .      .  168: }
+---
+     .      .  169: 
+     .      .  170: void* modify_list_mutex(long long index) {
+     .      .  171: 	for (long long i = 0; i != iterations; i++) {
+     .      .  172: 		int key = hash_key[index*iterations + i];
+     .      .  173: 		struct timespec begin, end;
+ROUTINE ====================== modify_list_spin in /u/eng/ugrad/angelaw/Desktop/cs111/project2b/lab2_list.c
+  1048   1258 Total samples (flat / cumulative)
+     .      .   91: 		}
+     .      .   92: 	}
+     .      .   93: 	return NULL;
+     .      .   94: }
+     .      .   95: 
+---
+     .      .   96: void* modify_list_spin(long long index) {
+     .      .   97: 	struct timespec begin, end;
+     .      .   98: 	for (long long i = 0; i != iterations; i++) {
+     .      .   99: 		int key = hash_key[index*iterations + i];
+     .     10  100: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &begin) < 0) {
+     .      .  101: 			syscall_error();
+     .      .  102: 		}
+     .      .  103: 
+   482    482  104: 		while (__sync_lock_test_and_set(&((sublist_arr + key)->spin_lock), 1))
+     .      .  105: 			;
+     .      .  106: 
+     .      .  107: 
+     .     17  108: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end) < 0) {
+     .      .  109: 			syscall_error();
+     .      .  110: 		}
+     .      .  111: 
+     .      .  112: 		wait[key] += (end.tv_nsec - begin.tv_nsec);
+     .      .  113: 
+     .     73  114: 		SortedList_insert((sublist_arr + key)->list, elementArr + index*iterations + i);
+     .      .  115: 		__sync_lock_release(&((sublist_arr + key)->spin_lock));
+     .      .  116: 	}
+     .      .  117: 
+     .      .  118: 	for (int i = 0; i != num_list; i++) {
+     .      .  119: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &begin) < 0) {
+     .      .  120: 			syscall_error();
+     .      .  121: 		}
+     .      .  122: 
+     3      3  123: 		while (__sync_lock_test_and_set(&((sublist_arr + i)->spin_lock), 1))
+     .      .  124: 			;	
+     .      .  125: 
+     .      .  126: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end) < 0) {
+     .      .  127: 			syscall_error();
+     .      .  128: 		}
+     .      .  129: 
+     .      .  130: 		wait[i] += (end.tv_nsec - begin.tv_nsec);
+     .      .  131: 
+     .      .  132: 		int length = SortedList_length((sublist_arr + i)->list);
+     .      .  133: 		__sync_lock_release(&((sublist_arr + i)->spin_lock));
+     .      .  134: 
+     .      .  135: 		if (length == -1) {
+     .      .  136: 			fprintf(stderr, "SortedList_length failed: List was corrupted\n");
+     .      .  137: 			exit(EXIT_OTHER);
+     .      .  138: 		}
+     .      .  139: 	}
+     .      .  140: 
+     .      .  141: 	for (long long i = 0; i != iterations; i++) {
+     .      .  142: 		int key = hash_key[index*iterations + i];
+     .     10  143: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &begin) < 0) {
+     .      .  144: 			syscall_error();
+     .      .  145: 		}
+     .      .  146: 
+   562    562  147: 		while (__sync_lock_test_and_set(&((sublist_arr + key)->spin_lock), 1))
+     .      .  148: 			;		
+     .      .  149: 
+     .     16  150: 		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end) < 0) {
+     .      .  151: 			syscall_error();
+     .      .  152: 		}
+     .      .  153: 
+     .      .  154: 		wait[key] += (end.tv_nsec - begin.tv_nsec);
+     .      .  155: 
+     .     84  156: 		SortedListElement_t *del_element = SortedList_lookup((sublist_arr + key)->list, (elementArr + index*iterations + i)->key);
+     .      .  157: 		if (del_element == NULL) {
+     .      .  158: 			fprintf(stderr, "SortedList_lookup failed: List was corrupted\n");
+     .      .  159: 			exit(EXIT_OTHER);
+     .      .  160: 		}
+     .      .  161: 		if (SortedList_delete(del_element) != 0) {
+     .      .  162: 			fprintf(stderr, "SortedList_delete failed: List was corrupted\n");
+     .      .  163: 			exit(EXIT_OTHER);
+     .      .  164: 		}
+     1      1  165: 		__sync_lock_release(&((sublist_arr + key)->spin_lock));
+     .      .  166: 	}
+     .      .  167: 	return NULL;
+     .      .  168: }
+---
+     .      .  169: 
+     .      .  170: void* modify_list_mutex(long long index) {
+     .      .  171: 	for (long long i = 0; i != iterations; i++) {
+     .      .  172: 		int key = hash_key[index*iterations + i];
+     .      .  173: 		struct timespec begin, end;
