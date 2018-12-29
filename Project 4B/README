@@ -1,0 +1,16 @@
+NAME: Angela Wu
+EMAIL: angelawu.123456789@gmail.com
+ID: 604763501
+
+INCLUDED FILES
+lab4b.c 					a C program that runs on a Beaglebone, samples the surrounding 
+							temperature, and takes in commands from the terminal 
+
+Makefile					a file that builds the executable, runs a brief smoke test,
+							and generates a tar file
+
+README						This file. Gives extra information about the project
+
+RESOURCES
+https://www.tutorialspoint.com/c_standard_library/c_function_localtime.htm
+	a tutorial on how to use localtime functions

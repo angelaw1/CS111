@@ -1,0 +1,19 @@
+NAME: Angela Wu,Candice Zhang
+EMAIL: angelawu.123456789@gmail.com,candicezhang1997@gmail.com
+ID: 604763501,604757623
+
+INCLUDED FILES
+lab3a.c                 source file that reads a file system image, analyzes it
+                        prints out information about it
+
+ext2_fs.h               header file that contains definition of the format of
+                        the EXT2 file system
+
+Makefile                compiles the source code and creates a tar file
+
+README                  this file, more information about the project
+
+
+RESOURCES
+http://cs.smith.edu/~nhowe/262/oldlabs/ext2.html#itable
+      information and some code snippets for EXT2 filesystem

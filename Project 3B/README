@@ -1,0 +1,14 @@
+NAME: Angela Wu,Candice Zhang
+EMAIL: angelawu.123456789@gmail.com,candicezhang1997@gmail.com
+ID: 604763501,604757623
+
+INCLUDED FILES
+lab3b.c:			source code file
+README:				this file
+Makefile:			to make the tarball
+
+RESOURCES
+https://stackoverflow.com/questions/82831/how-to-check-whether-a-file-exists
+https://stackoverflow.com/questions/8380006/file-open-function-with-try-except-python-2-7-1
+https://dzone.com/articles/python-101-reading-and-writing
+https://stackoverflow.com/questions/16503560/read-specific-columns-from-a-csv-file-with-csv-module

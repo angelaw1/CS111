@@ -1,0 +1,18 @@
+NAME: Angela Wu
+EMAIL: angelawu.123456789@gmail.com
+ID: 604763501
+
+INCLUDED FILES
+lab4c_tcp.c 			source file that runs on a beaglebone and communicates with 
+						a logging server via sockets
+
+lab4c_tls.c 			sources file that runs on a beaglebone and opens a TLS
+						connection to the server at the specified address and port		
+
+Makefile				compiles sources files and creates tar file
+
+
+README					this file, more information about the project
+
+RESOURCES
+http://fm4dd.com/openssl/sslconnect.htm
